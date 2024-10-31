@@ -16,6 +16,14 @@ data "aws_subnet" "default" {
     vpc_id  = data.aws_vpc.default.id
 }
 
+output "subnet_ids" {
+  value = data.aws_subnets.default.ids
+}
+
+output "subnet_names" {
+  value = [for subnet in data.aws_subnets.default.subnets : subnet.tags["Name"]]
+}
+
 resource "aws_instance" "enterprise_ec2" {
     ami     = data.aws_ami.amazon_linux.id
     instance_type = var.instance_type

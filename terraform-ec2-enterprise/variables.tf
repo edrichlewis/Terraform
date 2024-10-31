@@ -14,3 +14,8 @@ variable "security_group_name" {
     type = string
     default = "enterprise-ec2-sg"
 }
+
+variable "selected_subnet_id" {
+  description = "The selected subnet ID for the EC2 instance"
+  type        = string
+}

@@ -1,2 +1,2 @@
 # Terraform
-Practice Terraform 
+Practicing Terraform for enterprise solutions

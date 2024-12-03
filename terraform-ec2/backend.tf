@@ -1,9 +1,9 @@
 terraform {
     backend "s3" {
-        bucket = "your-enterprise-tf-state-bucket"
-        key    = "ec2/terraform.tfstate"
+        bucket = "terraform-state-enterprise"
+        key    = "ec2-instance/terraform.tfstate"
         region = "us-east-2"
-        dynamodb_table = "new-tf-table"
+        dynamodb_table = "terraform-lock-table"
         encrypt = true
     }
 }

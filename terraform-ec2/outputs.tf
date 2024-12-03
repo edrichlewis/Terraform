@@ -1,9 +1,11 @@
-output "ec2_instance_id" {
-    value = aws_instance.enterprise_ec2.id
+output "instance_id" {
+    description = "ID of the created EC2 instance"
+    value = module.ec2_instance.instance_id
 }
 
-output "ec2_public_ip" {
-    value = aws_instance.enterprise_ec2.public_ip
+output "public_ip" {
+    description = "Public IP of the created EC2 instance"
+    value = module.ec2_instance
 }
 
 output "ec2_private_ip" {

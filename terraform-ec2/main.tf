@@ -1,38 +1,14 @@
-data "aws_ami" "amazon_linux" {
-    most_recent = true
-    owners      = ["amazon"]
-
-    filter {
-        name    = "name"
-        values  = ["amzn2-ami-hvm-*-x86_64-gp2"]
-    }
-}
-
-data "aws_vpc" "default" {
-  default = true
-}
-
 data "aws_subnet" "default" {
-    vpc_id  = data.aws_vpc.default.id
+  default_for_az = true
 }
 
-output "subnet_ids" {
-  value = data.aws_subnets.default.ids
-}
+module "ec2_instance" {
+  source = "./modules/ec2"
+  ami = "ami-0453ec754f44f9a4a"
+  instance_type = var.instance_type
+  subnet_id = data.aws_subnet.default.id
+  name = var.instance_name
+  environment = var.environment
 
-output "subnet_names" {
-  value = [for subnet in data.aws_subnets.default.subnets : subnet.tags["Name"]]
-}
-
-resource "aws_instance" "enterprise_ec2" {
-    ami     = data.aws_ami.amazon_linux.id
-    instance_type = var.instance_type
-    subnet_id     = data.aws_subnet.default.id
-    key_name      = var.key_name
-    security_groups = [aws_security_group.ec2_security_group.name]
-
-    tags = {
-        Name = "Enterprise-EC2-Instance"
-        Environment = "Production"
-    }
+  
 }

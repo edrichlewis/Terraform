@@ -2,10 +2,10 @@ variable "region" {
     description = "AWS region"
     default = "us-east-2"
 }
-
+# just a comment 
 variable "instance_type" {
     description = "EC2 instance type"
-    defdefault =  "t2.micro"
+    default =  "t2.micro"
 }
 
 variable "instance_name" {

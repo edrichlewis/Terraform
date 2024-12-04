@@ -1,5 +1,5 @@
 resource "aws_security_group" "ec2_security_group" {
-   # name    = var.security_group_name
+    name    = "ec2_security_group"
     description = "Allow SSH and HTTP access"
     vpc_id      = data.aws_vpc.default.id
 

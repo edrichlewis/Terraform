@@ -61,7 +61,7 @@ jobs:
                 jq '.values.root_module.resources[].address' state.json | sed 's/^"//;s/"$//' > resource_list.txt
                 echo "Available Resources"
                 cat resource_list.txt
-              working_directory: terraform-ec2
+              working-directory: terraform-ec2
 
             # Step 6: Terraform Plan or Destroy
             - name: Terraform Plan ot Destroy

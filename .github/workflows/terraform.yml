@@ -57,23 +57,30 @@ jobs:
             # Step 5: List Resources
             - name: List Terraform Resources
               run: |
-                terraform show -json > state.json
-                jq '.values.root_module.resources[].address' state.json | sed 's/^"//;s/"$//' > resource_list.txt
-                echo "Available Resources"
-                cat resource_list.txt
+                terraform show -json > state.json || echo "No state file found"
+                  if [ -f state.json ]; then
+                    jq '.values.root_module.resources[].address' state.json | sed 's/^"//;s/"$//' > resource_list.txt
+                    echo "Available Resources:"
+                    cat resource_list.txt
+                  else
+                    echo "State file not found. Skipping resource listing."
+                  fi
               working-directory: terraform-ec2
 
             # Step 6: Terraform Plan or Destroy
             - name: Terraform Plan ot Destroy
               run: |
-                if [ "${{ github.event.inputs.action }}" == "destroy" ]; then
-                  if [ "${{ github.event.inputs.target }}" == "all" ]; then
+                ACTION="${{ github.event.inputs.action }}"
+                TARGET="${{ github.event.inputs.target }}"
+            
+                if [ "$ACTION" == "destroy" ]; then
+                  if [ "$TARGET" == "all" ]; then
                     terraform plan -destroy
-                else
-                  IFS=',' read -ra TARGETS <<< "${{ github.event.inputs.target}}"
-                  for target in "${TARGETS[@]}"; do
-                    terraform plan -destroy -target=$target
-                  done
+                  else
+                    IFS=',' read -ra TARGETS <<< "$TARGET"
+                    for target in "${TARGETS[@]}"; do
+                      terraform plan -destroy -target="$target"
+                    done
                   fi
                 else
                   terraform plan
@@ -85,13 +92,16 @@ jobs:
             # Step 7: Terraform Apply or Destroy
             - name: Terraform Apply or Destroy
               run: |
-                if [ "${{ github.event.inputs.action }}" == "destroy" ]; then
-                  if [ "${{ github.event.inputs.target }}" == "all"]; then
+                ACTION="${{ github.event.inputs.action }}"
+                TARGET="${{ github.event.inputs.target }}"
+  
+                if [ "$ACTION" == "destroy" ]; then
+                  if [ "$TARGET" == "all" ]; then
                     terraform destroy -auto-approve
                   else
-                    IFS=',' read -ra TARGETS <<< "${{ github.event.inputs.target }}"
+                    IFS=',' read -ra TARGETS <<< "$TARGET"
                     for target in "${TARGETS[@]}"; do
-                      terraform destroy -target=$target -auto-approve
+                      terraform destroy -target="$target" -auto-approve
                     done
                   fi
                 else

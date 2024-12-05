@@ -9,6 +9,6 @@ output "public_ip" {
 }
 
 output "ec2_private_ip" {
-    value = value = module.ec2_instance.public_ip
+    value = module.ec2_instance.public_ip
 }
 

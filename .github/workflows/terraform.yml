@@ -16,9 +16,9 @@ on:
           required: false
           default: ""
 
-    push:
-        branches:
-            - main
+  #  push:             #comenting push to disable auto deploy, uncomment to trigger auto deploy
+   #     branches:
+    #        - main
     pull_request:
 
 jobs: 

@@ -5,7 +5,7 @@ module "vpc" {
 }
 
 module "subnet" {
-    source = "Terraform/modules/subnet"
+    source = "../../modules/subnet"
     vpc_id = module.vpc.vpc_id
     cidr_blocks = ["10.0.1.0/24", "10.0.2.0/24"]
     availability_zones = ["us-west-2a", "us-west-2b"]

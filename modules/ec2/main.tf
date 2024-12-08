@@ -1,5 +1,5 @@
 resource "aws_instance" "apache" {
-  ami = vare.ami
+  ami = var.ami
   instance_type = var.instance_type
   subnet_id = var.subnet_id
   key_name = var.key_name
@@ -16,7 +16,7 @@ resource "aws_instance" "apache" {
      ]
 
      connection {
-       type = "ssh"
+       type = "ssh" 
        user = "ubuntu"
        private_key = file(var.private_key_path)
        host = self.public_ip
